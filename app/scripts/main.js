@@ -3,19 +3,27 @@ requirejs.config({
 	"paths":{
 		"jquery": "vendor/jquery/jquery",
 		"underscore": "vendor/underscore/underscore",
-		"backbone": "vendor/backbone/backbone"
+		"backbone": "vendor/backbone/backbone",
+		"mmenu": "mmenu-2.2.2/jquery.mmenu",
+		"swiper": "idangerous.swiper-2.0.min"
 	},
 	shim:{
 		"backbone":	{
 			deps: ['underscore','jquery'],
 			exports: 'Backbone'
+		},
+		"mmenu":{
+			deps: ['jquery'],
+			exports: 'mmenu'
+		},
+		"swiper":{
+			deps: ['jquery'],
+			exports: 'swiper'
 		}
 	}
 });
 
-
-
-require(['jquery','backbone'],function($,Backbone){
+require(['jquery','backbone','mmenu','swiper'],function($,Backbone,mmenu,swiper){
 
 	String.prototype.format = function() {
 		var args = arguments;
@@ -24,14 +32,7 @@ require(['jquery','backbone'],function($,Backbone){
 		});
 	};
 
-	var Pattern = Backbone.Model.extend({
-	/*
-		initialize: function(){
-			this.name = '';
-			this.img = '';
-		}
-		*/
-	});	
+	var Pattern = Backbone.Model.extend({});	
 
 	var Patterns = Backbone.Collection.extend({
 		model: Pattern
@@ -64,30 +65,50 @@ require(['jquery','backbone'],function($,Backbone){
 	var LearnView = Backbone.View.extend({
 		el:$('#app'),
 		template:$('#tmpl-learn').html(),
+		initialize: function(){
+			$('body').on('mousedown','#menu-left a',function(){
+				var id = $(this).attr('name');
+				if(typeof id !== 'underfined'){
+					
+				}
+				return false;
+			});
+			$('body').on('mousedown','#menu-left .back',function(){
+				$('nav#menu-left').on('closed.mmenu',function(){
+					$('nav#menu-left').remove();
+				});
+				app.render();	
+				return false;
+			});	
+		},
 		events:{
-			'click .button.back':'back'
+			//'click a.back':'back' // dom change because mmenu
 		},
 		render:function(){
 			$(this.el).html(this.template.format('', ''));	
 			patterns.forEach(function(pattern){
 				var learnItem = new LearnItemView({model:pattern});
 				learnItem.render();
-				$('#learn .sidebar ul').append('<li>'+pattern.get('name')+'</li>');
-				$('#learn .slider').append(learnItem.el);
+				$('#learn .mmenu-left ul').append('<li><a href="#" name="'+pattern.get('name').toLowerCase().replace(/\s/g,'-')+'">'+pattern.get('name')+'</a></li>');
+				$('#learn .swiper-wrapper').append(learnItem.el);
 			});
-			$('#learn .sidebar ul').append('<li><div class="back button">Return</div></li>');
+			$('#learn .mmenu-left ul').append('<li><a href="#" class="back">Return</a></li>');
+			$('nav#menu-left').mmenu({
+				searchfield: true
+			});
+			$('.swiper-container').swiper({
+				mode: 'vertical'
+			});
 			return this;
-		},
-		back:function(){
-			app.render();		
 		}
 	});
 
 	var LearnItemView = Backbone.View.extend({
+		el:'',
 		template: $('#tmpl-learn-item').html(),
 		//events: {},
 		render: function(){
-			$(this.el).html(this.template.format(this.model.get('name'),this.model.get('img')));
+			this.el = this.template.format(this.model.get('name'),this.model.get('img'),this.model.get('name').toLowerCase().replace(/\s/g,'-'));
 			return this;
 		}
 	});
@@ -97,7 +118,8 @@ require(['jquery','backbone'],function($,Backbone){
 		template: $('#tmpl-quiz').html(),
 		events: {
 			'click .button.end': 'endQuiz',
-			'click .button.next': 'nextQuestion'	
+			'click .button.next': 'nextQuestion',
+			'click .button.answer': 'showAnswer'	
 		},
 		start: function(){
 			this.quiz = patterns.clone().shuffle();	
@@ -118,6 +140,11 @@ require(['jquery','backbone'],function($,Backbone){
 		},
 		nextQuestion: function(){
 			return this.render();
+		},
+		showAnswer: function(e){
+			$('.img-container').slideDown(function(){
+				$(e.target).slideUp();
+			});
 		}
 	});
 

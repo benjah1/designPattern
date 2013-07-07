@@ -3,49 +3,57 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>Design Pattern</title>	
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
 		<script type="text/javascript" data-main="scripts/main.js" src="scripts/vendor/requirejs/require.js"></script>
 	</head>
 	<body>
-		<h1>Hello World</h1>
 		<div id="app">
 		</div>
 		<script id="tmpl-main" type="text/template">
-			<div id="main" class="container">
-				<div class="nav">
-					<div class="learn button">Learn</div>
-					<div class="quiz button">Quiz</div>
+			<div id="main" class="row container">
+				<div class="app-title columns"><h1>Design Pattern</h1></div>
+				<div class="nav small-centered small-9 columns">
+					<div class="learn button expand">Learn</div>
+					<div class="quiz button expand">Quiz</div>
 				</div>
 			</div>
 		</script>
 
 		<script id="tmpl-learn" type="text/template">
-			<div class="container" id="learn">
-				<div class="sidebar">
-					<ul>{0}</ul>
+			<div class="row container" id="learn">
+				<div class="small-12 columns swiper-container">	
+					<div class="swiper-wrapper">{1}</div>
 				</div>
-				<div class="slider">{1}</div>
+				<div class="open"><a href="#menu-left">>></a></div>
+				<div id="mmenu-blocker"></div>
+				<nav id="menu-left" class="mmenu mmenu-left mmenu-horizontal">
+					<ul class="mmenu-opened">{0}</ul>
+				</nav>
 			</div>
 		</script>
 
 		<script id="tmpl-learn-item" type="text/template">
-		<li>
-		  <div class="container">
-		    <div class="header">
-					<div class="name">{0}</div>
-		    </div>
-				<div class="img">{1}</div>
-		  </div>
-		</li>
+		<div id="{2}" class="swiper-slide">
+			<div class="header">
+				<div><h1>{0}</h1></div>
+			</div>
+			<div class="img">{1}</div>
+		</div>
 		</script>
 
 		<script id="tmpl-quiz" type="text/template">
-			<div class="container" id="main">
-				<div class="header">
-					<div class="name">{0}</div>
-					<div class="button end">End</div>
+			<div class="container row" id="quiz">
+				<div class="small-9 columns"><h2>{0}</h2></div>
+				<div class="small-3 columns">
+					<div class="right button alert end">Quit</div>
 				</div>
-				<div class="img">{1}</div>
-				<div class="button next">Next</div>
+				<div class="img-container small-12 columns">
+					<div class="img">{1}</div>
+				</div>
+				<div class="small-12 columns">
+					<div class="button answer expand">Answer</div>
+					<div class="button next expand">Next</div>
+				</div>
 			</div>
 		</script>
 
