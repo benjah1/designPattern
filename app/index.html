@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<title>Design Pattern</title>	
+		<script type="text/javascript" data-main="scripts/main.js" src="scripts/vendor/requirejs/require.js"></script>
+	</head>
+	<body>
+		<h1>Hello World</h1>
+		<div id="app">
+		</div>
+		<script id="tmpl-main" type="text/template">
+			<div id="main" class="container">
+				<div class="nav">
+					<div class="learn button">Learn</div>
+					<div class="quiz button">Quiz</div>
+				</div>
+			</div>
+		</script>
+
+		<script id="tmpl-learn" type="text/template">
+			<div class="container" id="learn">
+				<div class="sidebar">
+					<ul>{0}</ul>
+				</div>
+				<div class="slider">{1}</div>
+			</div>
+		</script>
+
+		<script id="tmpl-learn-item" type="text/template">
+		<li>
+		  <div class="container">
+		    <div class="header">
+					<div class="name">{0}</div>
+		    </div>
+				<div class="img">{1}</div>
+		  </div>
+		</li>
+		</script>
+
+		<script id="tmpl-quiz" type="text/template">
+			<div class="container" id="main">
+				<div class="header">
+					<div class="name">{0}</div>
+					<div class="button end">End</div>
+				</div>
+				<div class="img">{1}</div>
+				<div class="button next">Next</div>
+			</div>
+		</script>
+
+	</body>
+</html>
+
